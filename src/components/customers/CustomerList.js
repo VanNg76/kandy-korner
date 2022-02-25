@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min"
+import { countCustomerPurchase } from "../ApiManager"
+
 
 export const CustomerList = () => {
     const [customers, addCustomer] = useState([])
-    const history = useHistory()
 
     useEffect(
         () => {
-            fetch("http://localhost:8088/customers")
-                .then(res => res.json())
+            countCustomerPurchase()
                 .then(customerData => {
                     addCustomer(customerData)
                     })
@@ -20,7 +19,8 @@ export const CustomerList = () => {
         <>
             {
                 customers.map(customer => {
-                    return <p key={`customer--${customer.id}`}>{customer.name}</p>
+                    return <p key={`customer--${customer.id}`}>{customer.name} bought {customer.purchases.length} {" "}
+                    {customer.purchases.length === 0 || customer.purchases.length === 1 ? "candy" : "candies"}</p>
                 })
             }
         </>
